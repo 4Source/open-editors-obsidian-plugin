@@ -1,4 +1,4 @@
-# Open Tabs Obsidian Plugin
+# Open Editors Obsidian Plugin
 > [!WARNING]  
 > This Plugin is under Development!
 
