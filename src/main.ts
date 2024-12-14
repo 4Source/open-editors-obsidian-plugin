@@ -1,15 +1,22 @@
-import { Plugin } from 'obsidian';
+import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { DEFAULT_SETTINGS, Settings } from './settings/SettingsInterface';
-import { MyPluginSettingTab } from './settings/SettingsTab';
+import { ICON_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
+import { OpenEditorsView } from './OpenEditorsView';
 
-export default class MyPlugin extends Plugin {
+export default class OpenEditorsPlugin extends Plugin {
 	settings: Settings;
 
 	async onload () {
 		await this.loadSettings();
 
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new MyPluginSettingTab(this.app, this));
+		// this.addSettingTab(new OpenEditorsSettingTab(this.app, this));
+
+		this.registerView(VIEW_TYPE_OPEN_EDITORS, (leaf) => new OpenEditorsView(leaf));
+
+		this.addRibbonIcon(ICON_OPEN_EDITORS, 'Open Open Editors', () => {
+			this.activateView(VIEW_TYPE_OPEN_EDITORS);
+		});
 	}
 
 	onunload () {
@@ -22,5 +29,30 @@ export default class MyPlugin extends Plugin {
 
 	async saveSettings () {
 		await this.saveData(this.settings);
+	}
+
+	async activateView (viewType: string) {
+		const { workspace } = this.app;
+
+		let leaf: WorkspaceLeaf | null = null;
+		const leaves = workspace.getLeavesOfType(viewType);
+
+		if (leaves.length > 0) {
+			// A leaf with our view already exists, use that
+			leaf = leaves[0];
+		}
+		else {
+			// Our view could not be found in the workspace, create a new leaf
+			// in the right sidebar for it
+			leaf = workspace.getRightLeaf(false);
+			if (leaf) {
+				await leaf.setViewState({ type: viewType, active: true });
+			}
+		}
+
+		// "Reveal" the leaf in case it is in a collapsed sidebar
+		if (leaf) {
+			workspace.revealLeaf(leaf);
+		}
 	}
 }

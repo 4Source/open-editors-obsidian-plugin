@@ -1,12 +1,12 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
-import MyPlugin from 'src/main';
+import OpenEditorsPlugin from 'src/main';
 
-export class MyPluginSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+export class OpenEditorsSettingTab extends PluginSettingTab {
+	plugin: OpenEditorsPlugin;
 
 	constructor (
 		app: App,
-		plugin: MyPlugin
+		plugin: OpenEditorsPlugin
 	) {
 		super(app, plugin);
 		this.plugin = plugin;

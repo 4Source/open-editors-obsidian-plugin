@@ -1,8 +1,8 @@
 {
-	"id": "obsidian-plugin-template",
-	"name": "Obsidian plugin template",
+	"id": "open-editors",
+	"name": "Open Editors",
 	"minAppVersion": "0.15.0",
-	"description": "",
+	"description": "Adds a view which let you manage your opened tabs.",
 	"author": "4Source",
 	"authorUrl": "https://github.com/4Source",
 	"isDesktopOnly": false,
