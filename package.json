@@ -1,6 +1,6 @@
 {
-	"name": "obsidian-plugin-template",
-	"description": "",
+	"name": "open-editors",
+	"description": "Obsidian plugin",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
