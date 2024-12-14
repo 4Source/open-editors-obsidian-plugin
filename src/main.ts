@@ -12,15 +12,17 @@ export default class OpenEditorsPlugin extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		// this.addSettingTab(new OpenEditorsSettingTab(this.app, this));
 
+		// Register the view
 		this.registerView(VIEW_TYPE_OPEN_EDITORS, (leaf) => new OpenEditorsView(leaf));
 
+		// Add ribbon icon to open the view
 		this.addRibbonIcon(ICON_OPEN_EDITORS, 'Open Open Editors', () => {
 			this.activateView(VIEW_TYPE_OPEN_EDITORS);
 		});
 	}
 
 	onunload () {
-		
+
 	}
 
 	async loadSettings () {
