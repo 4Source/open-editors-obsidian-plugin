@@ -2,6 +2,7 @@
 > This Plugin is under Development!
 
 Adds a view which shows the opened windows, groups, tabs and editors inside them. Makes managing the open editors easier.
+
 ![image](https://github.com/user-attachments/assets/ac09bdb3-9914-4d91-9db0-ff898b7960d8)
 
 # Features
