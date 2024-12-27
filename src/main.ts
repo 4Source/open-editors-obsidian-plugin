@@ -19,6 +19,15 @@ export default class OpenEditorsPlugin extends Plugin {
 		this.addRibbonIcon(ICON_OPEN_EDITORS, VIEW_DISPLAY_OPEN_EDITORS, () => {
 			this.activateView(VIEW_TYPE_OPEN_EDITORS);
 		});
+
+		// Add command to open the view
+		this.addCommand({
+			id: 'show-view',
+			name: 'Show',
+			callback: () => {
+				this.activateView(VIEW_TYPE_OPEN_EDITORS);
+			},
+		});
 	}
 
 	onunload () {
