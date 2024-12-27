@@ -1,5 +1,5 @@
 import { View, WorkspaceLeaf } from 'obsidian';
-import { ICON_CLOSE, ICON_CLOSE_GROUP, ICON_CLOSE_WINDOW, ICON_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
+import { ICON_CLOSE, ICON_CLOSE_GROUP, ICON_CLOSE_WINDOW, ICON_OPEN_EDITORS, VIEW_DISPLAY_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
 import { TreeItem } from './TreeItem';
 
 export class OpenEditorsView extends View {
@@ -24,7 +24,7 @@ export class OpenEditorsView extends View {
 	}
 
 	getDisplayText (): string {
-		return 'Open Editors';
+		return VIEW_DISPLAY_OPEN_EDITORS;
 	}
 
 	async onOpen () {

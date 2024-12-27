@@ -1,6 +1,6 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { DEFAULT_SETTINGS, Settings } from './settings/SettingsInterface';
-import { ICON_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
+import { ICON_OPEN_EDITORS, VIEW_DISPLAY_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
 import { OpenEditorsView } from './OpenEditorsView';
 
 export default class OpenEditorsPlugin extends Plugin {
@@ -16,8 +16,17 @@ export default class OpenEditorsPlugin extends Plugin {
 		this.registerView(VIEW_TYPE_OPEN_EDITORS, (leaf) => new OpenEditorsView(leaf));
 
 		// Add ribbon icon to open the view
-		this.addRibbonIcon(ICON_OPEN_EDITORS, 'Open Open Editors', () => {
+		this.addRibbonIcon(ICON_OPEN_EDITORS, VIEW_DISPLAY_OPEN_EDITORS, () => {
 			this.activateView(VIEW_TYPE_OPEN_EDITORS);
+		});
+
+		// Add command to open the view
+		this.addCommand({
+			id: 'show-view',
+			name: 'Show',
+			callback: () => {
+				this.activateView(VIEW_TYPE_OPEN_EDITORS);
+			},
 		});
 	}
 
