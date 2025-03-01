@@ -3,6 +3,8 @@ import { IconName, setIcon } from 'obsidian';
 export class TreeItem {
 	// The ID of the tree item
 	id: string;
+	// The type of the workspace item behind this tree item
+	type: string;
 	// Tree items inside this tree item
 	children: TreeItem[];
 	// Main container element for the tree item
@@ -26,6 +28,7 @@ export class TreeItem {
 		conteinerEl: HTMLDivElement,
 		title: string,
 		id: string,
+		type: string,
 		handler?: {
 			onClickCallback?: (ev: MouseEvent) => void,
 			onDragCallback?: (ev: DragEvent, delegateTarget: HTMLElement) => void
@@ -34,6 +37,7 @@ export class TreeItem {
 	) {
 		this.children = [];
 		this.id = id;
+		this.type = type;
 
 		// Create the main tree item element
 		this.treeItemEl = conteinerEl.createEl('div', { cls: 'tree-item' });
@@ -107,6 +111,23 @@ export class TreeItem {
 			child.rekursiveCall(callback);
 		});
 		callback(this);
+	}
+
+	/**
+	 * Recursively apply a callback funstion to the current tree item and its children if the type matches the given type.
+	 * @param callback - The function to call for each tree item.
+	 * @param type - The type TreeItem needs to have
+	 */
+	rekursiveCallForType (actions: { callback: (tree: TreeItem) => void, type: string }[]) {
+		this.children.forEach((child) => {
+			child.rekursiveCallForType(actions);
+		});
+
+		actions.forEach(action => {
+			if (this.type === action.type) {
+				action.callback(this);
+			}
+		});
 	}
 
 	/**
