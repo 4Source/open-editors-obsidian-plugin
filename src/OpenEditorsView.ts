@@ -55,6 +55,7 @@ export class OpenEditorsView extends View {
 			// Create a top-level tree item for the main window
 			const tree = new TreeItem(this.treeEl, 'Main window', main.id, undefined, [{
 				iconId: ICON_CLOSE_WINDOW,
+				ariaLabel: 'Close all',
 				onClickCallback: () => {
 					// Recursively detach all leaves in the tree
 					tree.rekursiveCall((tree) => {
@@ -67,9 +68,14 @@ export class OpenEditorsView extends View {
 			this.windows.push(tree);
 
 			// Recursively build the tree structure for all child elements
-			main.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
-				this.TreeWalker(element, tree);
-			});
+			if (main.children.length > 1) {
+				this.TreeWalker(main, tree);
+			}
+			else {
+				main.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
+					this.TreeWalker(element, tree);
+				});
+			}
 		}
 
 		// Handle floating windows (popout windows)
@@ -95,13 +101,13 @@ export class OpenEditorsView extends View {
 				// Create a tree item for each floating window
 				parent = new TreeItem(this.treeEl, `Window ${count}`, layout.id, undefined, [{
 					iconId: ICON_CLOSE_WINDOW,
+					ariaLabel: 'Close all',
 					onClickCallback: () => {
 						// Recursively detach all leaves in the tree
 						parent?.rekursiveCall((parent) => {
 							this.app.workspace.getLeafById(parent.id)?.detach();
 						});
 					},
-					ariaLabel: 'Close all',
 				}]);
 				// Add the tree item to the list of windows
 				this.windows.push(parent);
@@ -112,12 +118,12 @@ export class OpenEditorsView extends View {
 					layout.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
 						const group = parent?.addChild((containerEl) => new TreeItem(containerEl, `Group ${groupCount}`, element.id, undefined, [{
 							iconId: ICON_CLOSE_GROUP,
+							ariaLabel: 'Close all',
 							onClickCallback: () => {
 								parent?.rekursiveCall((tree) => {
 									this.app.workspace.getLeafById(tree.id)?.detach();
 								});
 							},
-							ariaLabel: 'Close all',
 						}]));
 						this.TreeWalker(element, group);
 						groupCount++;
@@ -171,10 +177,10 @@ export class OpenEditorsView extends View {
 					},
 				}, [{
 					iconId: ICON_CLOSE,
+					ariaLabel: 'Close',
 					onClickCallback: () => {
 						this.app.workspace.getLeafById(layout.id)?.detach();
 					},
-					ariaLabel: 'Close',
 				}]));
 				break;
 			default:
