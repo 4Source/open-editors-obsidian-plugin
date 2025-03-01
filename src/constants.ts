@@ -10,3 +10,4 @@ export const ICON_OPEN_IN_NEW_WINDOW = 'picture-in-picture-2';
 export const ICON_SPLIT_RIGHT = 'separator-vertical';
 export const ICON_SPLIT_DOWN = 'separator-horizontal';
 export const ICON_REVEAL_IN_NAVIGATION = 'folder-open';
+export const ICON_COMBINE_GROUP = 'shrink';
