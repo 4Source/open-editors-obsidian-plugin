@@ -1,4 +1,4 @@
-import { View, WorkspaceLeaf } from 'obsidian';
+import { View, WorkspaceLeaf, WorkspaceSplit } from 'obsidian';
 import { ICON_CLOSE, ICON_CLOSE_GROUP, ICON_CLOSE_WINDOW, ICON_OPEN_EDITORS, VIEW_DISPLAY_OPEN_EDITORS, VIEW_TYPE_OPEN_EDITORS } from './constants';
 import { TreeItem } from './TreeItem';
 
@@ -143,13 +143,53 @@ export class OpenEditorsView extends View {
 				layout.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
 					// Create a child tree item for each split group
 					const tree = parent?.addChild((container) => new TreeItem(container, `Group ${count}`, element.id, undefined, [{
-						iconId: ICON_CLOSE_GROUP,
+						iconId: ICON_CLOSE,
+						ariaLabel: 'Close group',
 						onClickCallback: () => {
 							tree?.rekursiveCall((tree) => {
 								this.app.workspace.getLeafById(tree.id)?.detach();
 							});
 						},
-						ariaLabel: 'Close all',
+					}, {
+						iconId: ICON_CLOSE_GROUP,
+						ariaLabel: 'Close all editors',
+						onClickCallback: () => {
+							if (tree) {
+								// Find leaf parent
+								let leafParent: WorkspaceSplit | undefined;
+								tree.rekursiveCall(tree => {
+									const leaf = this.app.workspace.getLeafById(tree.id);
+									if (!leaf) {
+										console.debug('Leaf not found with the id ', tree.id);
+										return;
+									}
+									const parent = leaf?.parent;
+									if (!parent) {
+										console.debug('Parent of leaf not found!');
+										return;
+									}
+									leafParent = parent;
+								});
+								if (!leafParent) {
+									console.warn('Parent of leaf not found!');
+									return;
+								}
+
+								// Add a new tab to parent
+								const newId = this.app.workspace.createLeafInParent(leafParent, 0).id;
+								if (!newId) {
+									console.warn('No id of new leaf!');
+									return;
+								}
+
+								// Recursively detach all leaves in the tree except for new tab
+								tree?.rekursiveCall((tree) => {
+									if (tree.id != newId) {
+										this.app.workspace.getLeafById(tree.id)?.detach();
+									}
+								});
+							}
+						},
 					}]));
 					// Recursively process tabs as children
 					this.TreeWalker(element, tree);
