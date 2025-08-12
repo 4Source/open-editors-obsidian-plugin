@@ -5,6 +5,7 @@ import { TreeItem } from './TreeItem';
 export class OpenEditorsView extends View {
 	// Array of top-level tree items representing open editor windows
 	windows: TreeItem[];
+
 	// The root container element for the tree structure
 	treeEl: HTMLDivElement;
 
@@ -12,22 +13,22 @@ export class OpenEditorsView extends View {
 	 * Initializes the OpenEditorsView with a given workspace leaf.
 	 * @param leaf - The workspace leaf where this view will be rendered.
 	 */
-	constructor (leaf: WorkspaceLeaf) {
+	constructor(leaf: WorkspaceLeaf) {
 		super(leaf);
 
 		this.windows = [];
 		this.icon = ICON_OPEN_EDITORS;
 	}
 
-	getViewType (): string {
+	getViewType(): string {
 		return VIEW_TYPE_OPEN_EDITORS;
 	}
 
-	getDisplayText (): string {
+	getDisplayText(): string {
 		return VIEW_DISPLAY_OPEN_EDITORS;
 	}
 
-	async onOpen () {
+	async onOpen() {
 		// Create the main container for the view
 		this.containerEl.empty();
 		const container = this.containerEl.createEl('div', { cls: (VIEW_TYPE_OPEN_EDITORS + '-container') });
@@ -37,6 +38,7 @@ export class OpenEditorsView extends View {
 		this.registerEvent(this.app.workspace.on('layout-change', async () => {
 			// Clear the current tree structure
 			this.clearTree();
+
 			// Rebuild the tree based on the updated layout
 			this.createTree();
 		}));
@@ -45,7 +47,7 @@ export class OpenEditorsView extends View {
 	/**
 	 * Creates the tree structure representing the current workspace layout.
 	 */
-	createTree () {
+	createTree() {
 		// Get the current workspace layout
 		const layout = this.app.workspace.getLayout();
 
@@ -66,6 +68,7 @@ export class OpenEditorsView extends View {
 					}]);
 				},
 			}]);
+
 			// Add the tree item to the list of windows
 			this.windows.push(tree);
 
@@ -94,7 +97,7 @@ export class OpenEditorsView extends View {
 	 * @param layout - The current layout node being processed.
 	 * @param parent - The parent TreeItem to attach new child TreeItems to.
 	 */
-	TreeWalker (layout: { id: string, type: string, children: object[], state: { title: string, type: string } }, parent: TreeItem | undefined) {
+	TreeWalker(layout: { id: string, type: string, children: object[], state: { title: string, type: string } }, parent: TreeItem | undefined) {
 		// Counter for labeling groups and tabs
 		let count = 1;
 		switch (layout.type) {
@@ -114,11 +117,13 @@ export class OpenEditorsView extends View {
 						}]);
 					},
 				}]);
+
 				// Add the tree item to the list of windows
 				this.windows.push(parent);
 
 				if (layout.children.length > 1) {
 					let groupCount = 1;
+
 					// Recursively build the tree structure for all child elements
 					layout.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
 						const group = parent?.addChild((containerEl) => new TreeItem(containerEl, `Group ${groupCount}`, element.id, element.type, undefined, [{
@@ -146,6 +151,7 @@ export class OpenEditorsView extends View {
 				}
 
 				break;
+
 			// Handle split layouts
 			case 'split':
 				layout.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
@@ -208,17 +214,20 @@ export class OpenEditorsView extends View {
 							}
 						},
 					}]));
+
 					// Recursively process tabs as children
 					this.TreeWalker(element, group);
 					count++;
 				});
 				break;
+
 			// Handle tabs layouts
 			case 'tabs':
 				layout.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
 					this.TreeWalker(element, parent);
 				});
 				break;
+
 			// Handle individual leaves
 			case 'leaf':
 				parent?.addChild((container) => new TreeItem(container, layout.state.title, layout.id, layout.type, {
@@ -249,9 +258,10 @@ export class OpenEditorsView extends View {
 	/**
 	 * Clears the current tree structure and resets the windows array.
 	 */
-	clearTree () {
+	clearTree() {
 		// Delete all tree items and their children
 		this.windows.forEach(window => window.deleteTree());
+
 		// Reset the windows array
 		this.windows = [];
 

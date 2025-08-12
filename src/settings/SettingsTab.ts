@@ -4,7 +4,7 @@ import OpenEditorsPlugin from 'src/main';
 export class OpenEditorsSettingTab extends PluginSettingTab {
 	plugin: OpenEditorsPlugin;
 
-	constructor (
+	constructor(
 		app: App,
 		plugin: OpenEditorsPlugin
 	) {
@@ -12,7 +12,7 @@ export class OpenEditorsSettingTab extends PluginSettingTab {
 		this.plugin = plugin;
 	}
 
-	display (): void {
+	display(): void {
 		const { containerEl } = this;
 
 		containerEl.empty();
