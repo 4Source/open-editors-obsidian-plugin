@@ -6,11 +6,13 @@ import { OpenEditorsView } from './OpenEditorsView';
 export default class OpenEditorsPlugin extends Plugin {
 	settings: Settings;
 
-	async onload () {
+	async onload() {
 		await this.loadSettings();
 
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		// this.addSettingTab(new OpenEditorsSettingTab(this.app, this));
+		/*
+		 * This adds a settings tab so the user can configure various aspects of the plugin
+		 * this.addSettingTab(new OpenEditorsSettingTab(this.app, this));
+		 */
 
 		// Register the view
 		this.registerView(VIEW_TYPE_OPEN_EDITORS, (leaf) => new OpenEditorsView(leaf));
@@ -30,19 +32,19 @@ export default class OpenEditorsPlugin extends Plugin {
 		});
 	}
 
-	onunload () {
+	onunload() {
 
 	}
 
-	async loadSettings () {
+	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
-	async saveSettings () {
+	async saveSettings() {
 		await this.saveData(this.settings);
 	}
 
-	async activateView (viewType: string) {
+	async activateView(viewType: string) {
 		const { workspace } = this.app;
 
 		let leaf: WorkspaceLeaf | null = null;
@@ -53,8 +55,10 @@ export default class OpenEditorsPlugin extends Plugin {
 			leaf = leaves[0];
 		}
 		else {
-			// Our view could not be found in the workspace, create a new leaf
-			// in the right sidebar for it
+			/*
+			 * Our view could not be found in the workspace, create a new leaf
+			 * in the right sidebar for it
+			 */
 			leaf = workspace.getRightLeaf(false);
 			if (leaf) {
 				await leaf.setViewState({ type: viewType, active: true });

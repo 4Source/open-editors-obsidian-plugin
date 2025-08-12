@@ -3,16 +3,22 @@ import { IconName, setIcon } from 'obsidian';
 export class TreeItem {
 	// The ID of the tree item
 	id: string;
+
 	// The type of the workspace item behind this tree item
 	type: string;
+
 	// Tree items inside this tree item
 	children: TreeItem[];
+
 	// Main container element for the tree item
 	treeItemEl: HTMLDivElement;
+
 	// Represents the tree item
 	selfEl: HTMLDivElement;
+
 	// Container for child elements
 	childrenEl: HTMLDivElement;
+
 	// Element for displaying collapsible icons
 	iconEl: HTMLDivElement;
 
@@ -24,7 +30,7 @@ export class TreeItem {
 	 * @param handler - Optional event handlers
 	 * @param actions - Optional actions (clickable icons with callbacks)
 	 */
-	constructor (
+	constructor(
 		conteinerEl: HTMLDivElement,
 		title: string,
 		id: string,
@@ -60,6 +66,7 @@ export class TreeItem {
 					this.childrenEl.setCssProps({ 'display': 'none' });
 				}
 			}
+
 			// Invoke custom click handler if provided
 			if (handler?.onClickCallback) {
 				handler.onClickCallback(ev);
@@ -91,10 +98,12 @@ export class TreeItem {
 				if (action.ariaLabel) {
 					button.ariaLabel = action.ariaLabel;
 				}
+
 				// Add a click listener to invoke the action callback
 				button.onClickEvent((ev) => {
 					// Prevent click from bubbling up
 					ev.stopPropagation();
+
 					// Call provided onClick Callback function
 					action.onClickCallback(ev);
 				});
@@ -106,7 +115,7 @@ export class TreeItem {
 	 * Recursively apply a callback function to the current tree item and its children.
 	 * @param callback - The function to call for each tree item.
 	 */
-	rekursiveCall (callback: (tree: TreeItem) => void) {
+	rekursiveCall(callback: (tree: TreeItem) => void) {
 		this.children.forEach((child) => {
 			child.rekursiveCall(callback);
 		});
@@ -118,7 +127,7 @@ export class TreeItem {
 	 * @param callback - The function to call for each tree item.
 	 * @param type - The type TreeItem needs to have
 	 */
-	rekursiveCallForType (actions: { callback: (tree: TreeItem) => void, type: string }[]) {
+	rekursiveCallForType(actions: { callback: (tree: TreeItem) => void, type: string }[]) {
 		this.children.forEach((child) => {
 			child.rekursiveCallForType(actions);
 		});
@@ -137,7 +146,7 @@ export class TreeItem {
 	 * @example
 	 * parent.addChild((containerEl) => new TreeItem(containerEl, "Title", "ID"))
 	 */
-	addChild (treeCreateCallback: (containerEl: HTMLDivElement) => TreeItem): TreeItem {
+	addChild(treeCreateCallback: (containerEl: HTMLDivElement) => TreeItem): TreeItem {
 		if (!this.selfEl.hasClass('mod-collapsible')) {
 			// Make this tree item collapsible if it isn't already
 			this.selfEl.addClass('mod-collapsible');
@@ -146,7 +155,9 @@ export class TreeItem {
 		}
 
 		const child = treeCreateCallback(this.childrenEl);
-		this.children.push(child); // Add the child to the children array
+
+		// Add the child to the children array
+		this.children.push(child);
 		return child;
 	}
 
@@ -154,15 +165,18 @@ export class TreeItem {
 	 * Remove a child TreeItem by its ID.
 	 * @param id - The unique identifier of the child to remove.
 	 */
-	removeChild (id: string) {
+	removeChild(id: string) {
 		const child = this.children.find((value) => value.id == id);
 		if (child) {
 			this.children.remove(child);
+
 			// Recursively remove all children
 			child.removeAllChildren();
+
 			// Remove the DOM elements for this child
 			child.removeDom();
 		}
+
 		// If there are no more children, remove collapsible functionality
 		if (this.children.length <= 0 && this.selfEl.hasClass('mod-collapsible')) {
 			this.selfEl.removeClass('mod-collapsible');
@@ -173,16 +187,18 @@ export class TreeItem {
 	/**
 	 * Remove all child TreeItems from this tree item.
 	 */
-	removeAllChildren () {
+	removeAllChildren() {
 		while (this.children.length > 0) {
 			const child = this.children.pop();
 			if (child) {
 				// Recursively remove all children
 				child.removeAllChildren();
+
 				// Remove the DOM elements for this child
 				child.removeDom();
 			}
 		}
+
 		// If there are no more children, remove collapsible functionality
 		if (this.children.length <= 0 && this.selfEl.hasClass('mod-collapsible')) {
 			this.selfEl.removeClass('mod-collapsible');
@@ -193,7 +209,7 @@ export class TreeItem {
 	/**
 	 * Completely delete this tree and all of its children.
 	 */
-	deleteTree () {
+	deleteTree() {
 		this.removeAllChildren();
 		this.removeDom();
 	}
@@ -201,7 +217,7 @@ export class TreeItem {
 	/**
 	 * Private helper to remove DOM elements associated with this tree item.
 	 */
-	private removeDom () {
+	private removeDom() {
 		this.treeItemEl?.remove();
 		this.selfEl?.remove();
 		this.childrenEl?.remove();

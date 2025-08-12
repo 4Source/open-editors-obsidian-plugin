@@ -44,6 +44,13 @@
 			"error",
 			"always-multiline"
 		],
+		"comma-spacing": [
+			"error",
+			{
+				"before": false,
+				"after": true
+			}
+		],
 		"@stylistic/dot-location": [
 			"error",
 			"property"
@@ -55,7 +62,25 @@
 		"@stylistic/function-call-spacing": "error",
 		"@stylistic/implicit-arrow-linebreak": "error",
 		"@stylistic/key-spacing": "error",
-		"@stylistic/lines-around-comment": "error",
+		"@stylistic/lines-around-comment": [
+			"error",
+			{
+				"beforeBlockComment": true,
+				"afterBlockComment": false,
+				"beforeLineComment": true,
+				"afterLineComment": false,
+				"allowBlockStart": true,
+				"allowBlockEnd": false,
+				"allowClassStart": true,
+				"allowClassEnd": false,
+				"allowObjectStart": true,
+				"allowObjectEnd": false,
+				"allowArrayStart": true,
+				"allowArrayEnd": false,
+				"ignorePattern": "TODO|HACK|BUG|TEST",
+				"applyDefaultIgnorePatterns": false
+			}
+		],
 		"@stylistic/new-parens": "error",
 		"@stylistic/no-confusing-arrow": "error",
 		"@stylistic/no-extra-semi": "error",
@@ -74,7 +99,8 @@
 		"@stylistic/no-trailing-spaces": [
 			"error",
 			{
-				"skipBlankLines": true
+				"skipBlankLines": false,
+				"ignoreComments": false
 			}
 		],
 		"@stylistic/nonblock-statement-body-position": "error",
@@ -91,7 +117,14 @@
 		"@stylistic/semi-spacing": "error",
 		"@stylistic/semi-style": "error",
 		"@stylistic/space-before-blocks": "error",
-		"@stylistic/space-before-function-paren": "error",
+		"@stylistic/space-before-function-paren": [
+			"error",
+			{
+				"anonymous": "always",
+				"named": "never",
+				"asyncArrow": "always"
+			}
+		],
 		"@stylistic/arrow-spacing": "error",
 		"@stylistic/space-in-parens": "error",
 		"@stylistic/space-infix-ops": "error",
@@ -110,6 +143,13 @@
 				"allowEmptyCase": true
 			}
 		],
-		"no-console": ["error", {"allow": ["warn", "error", "debug"]}]
+		"line-comment-position": [
+			"error",
+			{
+				"position": "above",
+				"ignorePattern": "TODO|HACK|BUG|TEST",
+				"applyDefaultIgnorePatterns": false
+			}
+		]
 	}
 }
