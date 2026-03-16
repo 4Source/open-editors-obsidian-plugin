@@ -178,12 +178,12 @@ export class OpenEditorsView extends View {
 									callback: tree => {
 										const leaf = this.app.workspace.getLeafById(tree.id);
 										if (!leaf) {
-											console.debug('Leaf not found with the id ', tree.id);
+											console.warn('Leaf not found with the id ', tree.id);
 											return;
 										}
 										const parent = leaf?.parent;
 										if (!parent) {
-											console.debug('Parent of leaf not found!');
+											console.warn('Parent of leaf not found!');
 											return;
 										}
 										leafParent = parent;
