@@ -4,26 +4,26 @@
     overflow: auto;
 }
 
-.tree-iten-action-icon {
+.tree-item-action-icon {
     vertical-align: middle;
     display: flex;
     align-items: center;
     margin-inline-end: var(--size-4-2);
 }
 
-.tree-iten-action-icon:last-child {
+.tree-item-action-icon:last-child {
     vertical-align: middle;
     display: flex;
     align-items: center;
     margin-inline-end: 0;
 }
 
-.tree-iten-action-icon>span>svg {
+.tree-item-action-icon>span>svg {
     height: var(--icon-s) !important;
     width: var(--icon-s) !important;
 }
 
-.tree-iten-action-icon:hover {
+.tree-item-action-icon:hover {
     background-color: var(--interactive-hover);
 }
 

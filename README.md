@@ -6,11 +6,11 @@ Adds a view which shows the opened windows, groups, tabs and editors inside them
 ![image](https://github.com/user-attachments/assets/ac09bdb3-9914-4d91-9db0-ff898b7960d8)
 
 # Features
-- Close all ediors in window or group at once
+- Close all editors in window or group at once
 - Switch to other editor
 
 # Planed Features
-- Rearange your groups, windows or editors by drag and drop
+- Rearrange your groups, windows or editors by drag and drop
 
 # Contribution
 Feel free to contribute.

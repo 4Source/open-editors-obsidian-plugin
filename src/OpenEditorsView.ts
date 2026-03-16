@@ -60,7 +60,7 @@ export class OpenEditorsView extends View {
 				ariaLabel: 'Close all',
 				onClickCallback: () => {
 					// Recursively detach all leaves in the tree
-					tree.rekursiveCallForType([{
+					tree.recursiveCallForType([{
 						callback: (tree) => {
 							this.app.workspace.getLeafById(tree.id)?.detach();
 						},
@@ -83,7 +83,7 @@ export class OpenEditorsView extends View {
 			}
 		}
 
-		// Handle floating windows (popout windows)
+		// Handle floating windows (pop out windows)
 		const floatingWindow = layout['floating'];
 		if (floatingWindow) {
 			floatingWindow.children.forEach((element: { id: string, type: string, children: object[], state: { title: string, type: string } }) => {
@@ -101,7 +101,7 @@ export class OpenEditorsView extends View {
 		// Counter for labeling groups and tabs
 		let count = 1;
 		switch (layout.type) {
-			// Handle popout window layouts
+			// Handle pop out window layouts
 			case 'window':
 				// Create a tree item for each floating window
 				parent = new TreeItem(this.treeEl, `Window ${count}`, layout.id, layout.type, undefined, [{
@@ -109,7 +109,7 @@ export class OpenEditorsView extends View {
 					ariaLabel: 'Close all',
 					onClickCallback: () => {
 						// Recursively detach all leaves in the tree
-						parent?.rekursiveCallForType([{
+						parent?.recursiveCallForType([{
 							callback: (parent) => {
 								this.app.workspace.getLeafById(parent.id)?.detach();
 							},
@@ -130,7 +130,7 @@ export class OpenEditorsView extends View {
 							iconId: ICON_CLOSE_GROUP,
 							ariaLabel: 'Close all',
 							onClickCallback: () => {
-								parent?.rekursiveCallForType([{
+								parent?.recursiveCallForType([{
 									callback: (tree) => {
 										this.app.workspace.getLeafById(tree.id)?.detach();
 									},
@@ -160,7 +160,7 @@ export class OpenEditorsView extends View {
 						iconId: ICON_CLOSE,
 						ariaLabel: 'Close group',
 						onClickCallback: () => {
-							group?.rekursiveCallForType([{
+							group?.recursiveCallForType([{
 								callback: (tree) => {
 									this.app.workspace.getLeafById(tree.id)?.detach();
 								},
@@ -174,7 +174,7 @@ export class OpenEditorsView extends View {
 							if (group) {
 								// Find leaf parent
 								let leafParent: WorkspaceSplit | undefined;
-								group.rekursiveCallForType([{
+								group.recursiveCallForType([{
 									callback: tree => {
 										const leaf = this.app.workspace.getLeafById(tree.id);
 										if (!leaf) {
@@ -203,7 +203,7 @@ export class OpenEditorsView extends View {
 								}
 
 								// Recursively detach all leaves in the tree except for new tab
-								group?.rekursiveCallForType([{
+								group?.recursiveCallForType([{
 									callback: (tree) => {
 										if (tree.id != newId) {
 											this.app.workspace.getLeafById(tree.id)?.detach();
@@ -239,7 +239,7 @@ export class OpenEditorsView extends View {
 							return;
 						}
 						this.app.workspace.setActiveLeaf(leaf);
-						// TODO: Bring the leaf's popout window to the foreground if necessary
+						// TODO: Bring the leaf's pop out window to the foreground if necessary
 					},
 				}, [{
 					iconId: ICON_CLOSE,

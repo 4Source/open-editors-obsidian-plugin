@@ -24,14 +24,14 @@ export class TreeItem {
 
 	/**
 	 * Constructor to initialize a TreeItem instance.
-	 * @param conteinerEl - The parent container to render the tree item in.
+	 * @param containerEl - The parent container to render the tree item in.
 	 * @param title - The label of the tree item.
 	 * @param id - A unique identifier for this tree item.
 	 * @param handler - Optional event handlers
 	 * @param actions - Optional actions (clickable icons with callbacks)
 	 */
 	constructor(
-		conteinerEl: HTMLDivElement,
+		containerEl: HTMLDivElement,
 		title: string,
 		id: string,
 		type: string,
@@ -46,10 +46,10 @@ export class TreeItem {
 		this.type = type;
 
 		// Create the main tree item element
-		this.treeItemEl = conteinerEl.createEl('div', { cls: 'tree-item' });
+		this.treeItemEl = containerEl.createEl('div', { cls: 'tree-item' });
 		this.selfEl = this.treeItemEl.createEl('div', { cls: 'open-editors-tree-item-self tree-item-self is-clickable' });
 		this.childrenEl = this.treeItemEl.createEl('div', { cls: 'tree-item-children' });
-		// TODO: Add Icon infront of name
+		// TODO: Add Icon in front of name
 
 		// Add a click event listener to toggle the collapsible state of the item
 		this.selfEl.onClickEvent((ev) => {
@@ -93,7 +93,7 @@ export class TreeItem {
 		if (actions) {
 			actions.forEach(action => {
 				// Create a button for each action
-				const button = flairOuter.createEl('div', { cls: 'tree-item-flair mod-clickable tree-iten-action-icon' });
+				const button = flairOuter.createEl('div', { cls: 'tree-item-flair mod-clickable tree-item-action-icon' });
 				setIcon(button.createEl('span', { cls: '' }), action.iconId);
 				if (action.ariaLabel) {
 					button.ariaLabel = action.ariaLabel;
@@ -115,21 +115,21 @@ export class TreeItem {
 	 * Recursively apply a callback function to the current tree item and its children.
 	 * @param callback - The function to call for each tree item.
 	 */
-	rekursiveCall(callback: (tree: TreeItem) => void) {
+	recursiveCall(callback: (tree: TreeItem) => void) {
 		this.children.forEach((child) => {
-			child.rekursiveCall(callback);
+			child.recursiveCall(callback);
 		});
 		callback(this);
 	}
 
 	/**
-	 * Recursively apply a callback funstion to the current tree item and its children if the type matches the given type.
+	 * Recursively apply a callback function to the current tree item and its children if the type matches the given type.
 	 * @param callback - The function to call for each tree item.
 	 * @param type - The type TreeItem needs to have
 	 */
-	rekursiveCallForType(actions: { callback: (tree: TreeItem) => void, type: string }[]) {
+	recursiveCallForType(actions: { callback: (tree: TreeItem) => void, type: string }[]) {
 		this.children.forEach((child) => {
-			child.rekursiveCallForType(actions);
+			child.recursiveCallForType(actions);
 		});
 
 		actions.forEach(action => {

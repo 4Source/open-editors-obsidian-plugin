@@ -12,7 +12,6 @@ on:
           - minor
           - major
 
-
 jobs:
   release:
     runs-on: ubuntu-latest
