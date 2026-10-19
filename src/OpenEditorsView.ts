@@ -20,6 +20,44 @@ export class OpenEditorsView extends View {
 		this.icon = ICON_OPEN_EDITORS;
 	}
 
+	/**
+	 * Brings the window containing the given leaf to the foreground,
+	 * restoring it if it is minimized.
+	*/
+	private focusWindowOfLeaf(leaf: WorkspaceLeaf): void {
+		try {
+			const view = leaf.view;
+			if (!view || !view.containerEl) {
+				return;
+			}
+
+			const win = (view.containerEl as unknown as {
+				win?: {
+					electronWindow?: {
+						isMinimized?: () => boolean;
+						restore?: () => void;
+						show?: () => void;
+						focus?: () => void;
+					} | null;
+				};
+			}).win;
+
+			const electronWindow = win?.electronWindow;
+			if (!electronWindow) {
+				return;
+			}
+
+			if (electronWindow.isMinimized?.()) {
+				electronWindow.restore?.();
+			}
+			electronWindow.show?.();
+			electronWindow.focus?.();
+		}
+		catch (error) {
+			console.warn('Open Editors: Failed to focus window', error);
+		}
+	}
+
 	getViewType(): string {
 		return VIEW_TYPE_OPEN_EDITORS;
 	}
@@ -229,6 +267,7 @@ export class OpenEditorsView extends View {
 				break;
 
 			// Handle individual leaves
+			// Handle individual leaves
 			case 'leaf':
 				parent?.addChild((container) => new TreeItem(container, layout.state.title, layout.id, layout.type, {
 					onClickCallback: () => {
@@ -239,7 +278,9 @@ export class OpenEditorsView extends View {
 							return;
 						}
 						this.app.workspace.setActiveLeaf(leaf);
-						// TODO: Bring the leaf's pop out window to the foreground if necessary
+
+						// Bring the leaf's pop out window to the foreground if necessary
+						this.focusWindowOfLeaf(leaf);
 					},
 				}, [{
 					iconId: ICON_CLOSE,
